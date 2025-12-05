@@ -1,6 +1,18 @@
 # the_mathematics_of_Bitcoin
 Learn how Bitcoin works under the hood: a practical dive into the algebra, number theory, and cryptography that make the network tick.
 
+## install
+
+```
+git clone https://github.com/agama-point/the_mathematics_of_Bitcoin.git
+cd the_mathematics_of_bitcoin
+python3 -m venv venv  
+source venv/bin/activate
+pip install -r requirements.txt
+touch .env
+```
+
+
 
 ---
 
