@@ -1,14 +1,11 @@
 python-dotenv
 base58
 ecdsa
-cryptography
-secp256k1
 hashlib
-
 pybitcoin
 pyqrcode
+cryptography
 cryptos
 pbkdf2
 pygame
-
-
+secp256k1
