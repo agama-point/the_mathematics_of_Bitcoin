@@ -1,0 +1,11 @@
+python-dotenv
+cryptography
+secp256k1
+pybitcoin
+pyqrcode
+hashlib
+cryptos
+ecdsa
+pbkdf2
+pygame
+
