@@ -3,7 +3,7 @@
 ## 07) Diffie-Hellman
 
 ```
-# D-H simple xexample
+# D-H simple example
 g = 2   # Generator
 p = 17  # Modulo prime number
 
