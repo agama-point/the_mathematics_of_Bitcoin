@@ -1,11 +1,13 @@
 python-dotenv
+cryptos
 base58
 ecdsa
 hashlib
+pygame
 pybitcoin
 pyqrcode
 cryptography
-cryptos
+
 pbkdf2
-pygame
+
 secp256k1
