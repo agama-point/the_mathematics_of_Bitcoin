@@ -20,3 +20,27 @@ B = (g ** b) % p  # -> 8
 
 ---
 
+Example use of a simple Agama library:
+
+```python
+from crypto_agama.diffie_hellman import DiffieHellmanKeys
+
+G = 2 # generator
+p = 17
+
+dh = DiffieHellmanKeys(G,p)
+print(dh) # basic info
+
+print("[ Parameters ]")
+print("prime/modulo: ", dh.p)
+print("---generator: ", dh.g)
+
+print("[ --- Alice --- ]")
+alice_private_key = 5
+alice_public_key = dh.generate_public_key(alice_private_key)
+...
+# 15
+
+```
+
+
