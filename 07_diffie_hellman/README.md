@@ -45,7 +45,7 @@ alice_public_key = dh.generate_public_key(alice_private_key)
 
 ---
 
-```
+```python
 ...
 dh = DiffieHellmanKeys()
 sk = 555555555555
