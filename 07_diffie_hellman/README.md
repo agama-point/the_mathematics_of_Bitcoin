@@ -43,4 +43,21 @@ alice_public_key = dh.generate_public_key(alice_private_key)
 
 ```
 
+---
+
+```
+...
+dh = DiffieHellmanKeys()
+sk = 555555555555
+pk = dh.generate_public_key(sk)
+ss = dh.generate_shared_secret(sk, bob_public_key) 
+print(dh.get_hex_shared32())
+
+"""
+================================
+568a721168e50d5665cf5cd889c52235
+"""
+...
+```
+
 
