@@ -21,3 +21,14 @@ print("[ --- Alice --- ]")
 alice_private_key = a
 alice_public_key = dh.generate_public_key(alice_private_key)
 print("Public key:",alice_public_key)
+
+"""
+DiffieHellmanKeys
+(g = 2, p = 17)
+
+[ Parameters ]
+prime/modulo:  17
+---generator:  2
+[ --- Alice --- ]
+Public key: 15
+"""
