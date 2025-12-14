@@ -66,3 +66,29 @@ The process involved significant pre-processing:
 
 **Conclusion:** The threat of full-scale **quantum supremacy** to current encryption (like RSA) remains in the future, as Shor's Algorithm requires thousands of stable qubits, which are not yet available. For now, the classical computer wins!
 
+---
+
+## Reported Quantum Gate Fidelities (Recent Years)
+
+The table below summarizes **experimentally reported gate fidelities** achieved in recent years.  
+Values focus mainly on **two-qubit gate fidelity**, which is the critical metric for entanglement and scalable quantum computation. Single-qubit fidelities are included where explicitly notable.
+
+| Year | Organization / Lab | Qubit Technology | Metric | Reported Fidelity |
+|-----:|--------------------|------------------|--------|-------------------|
+| 2019 | Google (Sycamore) | Superconducting | Two-qubit gate fidelity | ~99.38% |
+| 2021 | USTC (China) | Superconducting | Two-qubit XEB fidelity | ~99.9% |
+| 2024 | IQM Quantum Computers | Superconducting | CZ two-qubit gate fidelity | ~99.9% |
+| 2024 | Quantinuum (Helios) | Trapped ions | Single-qubit gate fidelity | ~99.9975% |
+| 2025 | MIT (Fluxonium qubits) | Superconducting | Single-qubit gate fidelity | ~99.998% |
+| 2025 | Rigetti Computing | Superconducting | Two-qubit gate fidelity | ~99.5% |
+| 2025 | IonQ | Trapped ions | Two-qubit gate fidelity | ~99.99% |
+
+### Notes
+- **Two-qubit gate fidelity** is the dominant bottleneck for large-scale quantum computation.
+- **Single-qubit fidelities** are typically higher and already exceed 99.99% on multiple platforms.
+- Reported values depend on benchmarking methods (e.g. RB, XEB) and are not always directly comparable.
+- Even fidelities above 99.9% lead to rapid reliability loss when many entangled qubits are involved, motivating **quantum error correction**.
+
+This data provides realistic bounds for probabilistic models where total correctness scales as \( p^N \).
+
+
