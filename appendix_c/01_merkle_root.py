@@ -1,23 +1,126 @@
 import hashlib
+from pathlib import Path
+from textwrap import wrap
 
-# raw coinbase transaction from the genesis block
-raw_tx_hex = (
-    "01000000010000000000000000000000000000000000000000000000000000000000000000"
-    "ffffffff4d04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e"
-    "63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062"
-    "616e6b73ffffffff0100f2052a01000000434104678afdb0fe5548271967f1a67130b7105cd6a"
-    "828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a"
-    "4c702b6bf11d5fac00000000"
-)
+# ------------------------------------------------------------
+# Genesis block Merkle root verification
+# ------------------------------------------------------------
 
-# hex → bytes
-raw_tx = bytes.fromhex(raw_tx_hex)
+print("STEP 1: Locate genesis_block.txt")
 
-# 2x SHA256
-merkle_root = hashlib.sha256(hashlib.sha256(raw_tx).digest()).digest()[::-1].hex()
+BASE_DIR = Path(__file__).resolve().parent
+block_path = BASE_DIR / "genesis_block.txt"
 
-print("Merkle root:", merkle_root)
+print("Block file:", block_path)
+
+# ------------------------------------------------------------
+# Load block
+# ------------------------------------------------------------
+
+print("\nSTEP 2: Load full genesis block (hex)")
+
+with open(block_path, "r") as f:
+    block_hex = f.read().strip()
+
+print("Total block hex length:", len(block_hex))
+
+# ------------------------------------------------------------
+# Parse block header (80 bytes)
+# ------------------------------------------------------------
+
+print("\nSTEP 3: Parse block header")
+
+offset = 0
+
+def read_bytes(n):
+    global offset
+    size = n * 2
+    value = block_hex[offset:offset + size]
+    offset += size
+    return value
+
+version_hex = read_bytes(4)
+prev_block_hex = read_bytes(32)
+merkle_root_hex = read_bytes(32)
+time_hex = read_bytes(4)
+bits_hex = read_bytes(4)
+nonce_hex = read_bytes(4)
+
+print("Version:            ", version_hex)
+print("Previous block:     ", prev_block_hex)
+print("Merkle root (raw):  ", merkle_root_hex)
+print("Time:               ", time_hex)
+print("Bits:               ", bits_hex)
+print("Nonce:              ", nonce_hex)
+
+# Store expected Merkle root (convert to human-readable big endian)
+expected_merkle_root = bytes.fromhex(merkle_root_hex)[::-1].hex()
+
+print("\nExpected Merkle root (from header):")
+print(expected_merkle_root)
+
+# ------------------------------------------------------------
+# Parse transaction count (varint)
+# ------------------------------------------------------------
+
+print("\nSTEP 4: Parse transaction count (varint)")
+
+tx_count_hex = read_bytes(1)
+tx_count = int(tx_count_hex, 16)
+
+print("Transaction count:", tx_count)
+
+if tx_count != 1:
+    raise ValueError("Genesis block must contain exactly 1 transaction")
+
+# ------------------------------------------------------------
+# Extract raw coinbase transaction
+# ------------------------------------------------------------
+
+print("\nSTEP 5: Extract raw coinbase transaction")
+
+tx_hex = block_hex[offset:]
+
+print("Coinbase TX hex length:", len(tx_hex))
+
+print("\nCoinbase transaction (32 hex chars per line):\n")
+for line in wrap(tx_hex, 32):
+    print(line)
+
+tx_bytes = bytes.fromhex(tx_hex)
+print("\nCoinbase TX byte length:", len(tx_bytes))
+
+# ------------------------------------------------------------
+# Compute Merkle root
+# ------------------------------------------------------------
+
+print("\nSTEP 6: Compute double SHA256 of coinbase TX")
+
+hash1 = hashlib.sha256(tx_bytes).digest()
+hash2 = hashlib.sha256(hash1).digest()
+
+computed_merkle_root = hash2[::-1].hex()
+
+print("SHA256 #1:", hash1.hex())
+print("SHA256 #2:", hash2.hex())
+
+# ------------------------------------------------------------
+# Compare results
+# ------------------------------------------------------------
+
+print("\nSTEP 7: Compare Merkle roots")
+
+print("Expected (from header):", expected_merkle_root)
+print("Computed (from TX):    ", computed_merkle_root)
+
+if expected_merkle_root == computed_merkle_root:
+    print("\nRESULT: OK — Merkle root matches")
+else:
+    print("\nRESULT: ERROR — Merkle root does NOT match")
+
+
+
 
 """
-Merkle root: 4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b
+
 """

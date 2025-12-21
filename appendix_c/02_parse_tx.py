@@ -1,210 +1,149 @@
 #!/usr/bin/env python3
+import hashlib
 import struct
-import binascii
-import string
+from pathlib import Path
+from textwrap import wrap
 
-raw_tx_hex = (
-    "01000000010000000000000000000000000000000000000000000000000000000000000000"
-    "ffffffff4d04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e"
-    "63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062"
-    "616e6b73ffffffff0100f2052a01000000434104678afdb0fe5548271967f1a67130b7105cd6a"
-    "828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a"
-    "4c702b6bf11d5fac00000000"
-)
+# --- Helper Functions ---
+def dsha256(data_bytes):
+    """Performs double SHA256 hash: SHA256(SHA256(data))"""
+    return hashlib.sha256(hashlib.sha256(data_bytes).digest()).digest()
 
-# --- Helpers ---
-def read_varint(data, offset):
-    i = data[offset]
-    offset += 1
-    if i < 0xfd:
-        return i, offset
-    if i == 0xfd:
-        val = struct.unpack_from('<H', data, offset)[0]
-        return val, offset + 2
-    if i == 0xfe:
-        val = struct.unpack_from('<I', data, offset)[0]
-        return val, offset + 4
-    val = struct.unpack_from('<Q', data, offset)[0]
-    return val, offset + 8
+def format_header(title):
+    print("\n" + "="*60)
+    print(f"{title:^60}")
+    print("="*60)
 
-OPCODES = {
-    0x00: 'OP_0',
-    0x4c: 'OP_PUSHDATA1',
-    0x4d: 'OP_PUSHDATA2',
-    0x4e: 'OP_PUSHDATA4',
-    0x6a: 'OP_RETURN',
-    # small opcodes mapping for readability:
-}
-for i in range(1, 0x4c):
-    OPCODES[i] = f'OP_PUSHBYTES({i})'
-for i in range(0x51, 0x60):
-    OPCODES[i] = f'OP_{i-0x50}'
+# ------------------------------------------------------------
+# STEP 1: File Initialization
+# ------------------------------------------------------------
+BASE_DIR = Path(__file__).resolve().parent
+block_path = BASE_DIR / "genesis_block.txt"
 
-def is_printable_ascii(bs):
-    return all((chr(b) in string.printable and b not in (0x0a, 0x0d)) for b in bs)
+if not block_path.exists():
+    print(f"Error: {block_path} not found.")
+    exit(1)
 
-def hexdump(bs):
-    return bs.hex()
+with open(block_path, "r") as f:
+    # Remove any whitespaces, newlines or tabs from the input file
+    block_hex = "".join(f.read().split())
 
-# --- Parse transaction ---
-tx = bytes.fromhex(raw_tx_hex)
-off = 0
-version = struct.unpack_from('<I', tx, off)[0]; off += 4
-print(f"version: {version} (0x{version:08x})")
+# ------------------------------------------------------------
+# STEP 2: Parse Block Header (80 bytes)
+# ------------------------------------------------------------
+format_header("BITCOIN GENESIS BLOCK HEADER")
 
-# input count
-vin_cnt, off = read_varint(tx, off)
-print(f"vin_count: {vin_cnt}")
+# Bitcoin headers are 80 bytes (160 hex characters)
+header_bytes = bytes.fromhex(block_hex[:160])
 
-# parse first (and only) input
-print("\n--- input[0] ---")
-prev_txid = tx[off:off+32][::-1].hex(); off += 32
-prev_vout = struct.unpack_from('<I', tx, off)[0]; off += 4
-print(f"prev_txid: {prev_txid}")
-print(f"prev_vout: {prev_vout}")
+# Unpack header fields using little-endian (<)
+# I=uint32 (4 bytes), 32s=32 byte string
+version = struct.unpack_from("<I", header_bytes, 0)[0]
+prev_block = header_bytes[4:36][::-1].hex()
+merkle_root_header = header_bytes[36:68][::-1].hex()
+timestamp = struct.unpack_from("<I", header_bytes, 68)[0]
+bits = struct.unpack_from("<I", header_bytes, 72)[0]
+nonce = struct.unpack_from("<I", header_bytes, 76)[0]
 
-script_len, off = read_varint(tx, off)
-print(f"script_length: {script_len} bytes")
-script = tx[off:off+script_len]; off += script_len
-sequence = tx[off:off+4]; off += 4
-print(f"sequence: 0x{sequence.hex()}")
+block_hash = dsha256(header_bytes)[::-1].hex()
 
-print("\n--- coinbase script (raw hex) ---")
-print(script.hex())
+print(f"Block Hash:   {block_hash}")
+print(f"Version:      {version}")
+print(f"Prev Block:   {prev_block}")
+print(f"Merkle Root:  {merkle_root_header}")
+print(f"Timestamp:    {timestamp} (2009-01-03 18:15:05)")
+print(f"Bits:         {bits:08x}")
+print(f"Nonce:        {nonce}")
 
-# --- Disassemble script ---
-print("\n--- disassembly (coinbase script) ---")
-i = 0
-while i < len(script):
-    opcode = script[i]
-    i += 1
-    if opcode == 0x4c:  # OP_PUSHDATA1
-        if i >= len(script):
-            print("truncated OP_PUSHDATA1")
-            break
-        n = script[i]; i += 1
-        data = script[i:i+n]; i += n
-        tag = f"OP_PUSHDATA1 push {n} bytes"
-    elif opcode == 0x4d:  # OP_PUSHDATA2
-        if i + 1 >= len(script):
-            print("truncated OP_PUSHDATA2")
-            break
-        n = struct.unpack_from('<H', script, i)[0]; i += 2
-        data = script[i:i+n]; i += n
-        tag = f"OP_PUSHDATA2 push {n} bytes"
-    elif opcode == 0x4e:  # OP_PUSHDATA4
-        if i + 3 >= len(script):
-            print("truncated OP_PUSHDATA4")
-            break
-        n = struct.unpack_from('<I', script, i)[0]; i += 4
-        data = script[i:i+n]; i += n
-        tag = f"OP_PUSHDATA4 push {n} bytes"
-    elif opcode <= 75:  # direct push OP_PUSHBYTES(opcode)
-        n = opcode
-        data = script[i:i+n]; i += n
-        tag = f"OP_PUSHBYTES({n})"
-    else:
-        # Non-push opcode — print name if known
-        opname = OPCODES.get(opcode, f'OP_UNKNOWN(0x{opcode:02x})')
-        data = None
-        tag = opname
+# ------------------------------------------------------------
+# STEP 3: Transaction Count
+# ------------------------------------------------------------
+# The byte following the header (offset 80) is the Tx count (VarInt)
+tx_count = int(block_hex[160:162], 16)
+print(f"\nTransactions: {tx_count}")
 
-    # print details
-    print(f"{tag}:")
-    if data is not None:
-        print(f"  hex: {data.hex()}")
-        if is_printable_ascii(data):
-            try:
-                print(f"  ascii: {data.decode('ascii')}")
-            except Exception:
-                pass
-        # additionally try to interpret known fields:
-        # detect nBits pattern (4 bytes, little-endian) near start
-        if len(data) == 4 and 'nBits' not in globals():
-            # (we won't set global, just print interpretation)
-            val_le = int.from_bytes(data, 'little')
-            print(f"  as little-endian hex: 0x{val_le:08x}")
-    else:
-        print(f"  opcode")
+# ------------------------------------------------------------
+# STEP 4: Detailed Coinbase Transaction Parsing
+# ------------------------------------------------------------
+format_header("COINBASE TRANSACTION ANALYSIS")
 
-# After script, try to extract specifically the known fields from genesis layout
-print("\n--- interpreted fields (expected for genesis) ---")
-# According to genesis layout: script = (0xff.. markers) but we parse pushes above.
-# We'll attempt to locate the nBits and the "The Times..." text programmatically.
-# Search for ASCII "The Times"
-ascii_idx = script.find(b"The Times")
-if ascii_idx != -1:
-    # find push header before it: backtrack to find length byte(s)
-    start = ascii_idx
-    # print surrounding bytes
-    before = script[max(0, start-10):start]
-    print(f"Found 'The Times' at script offset {ascii_idx}. Context bytes before: {before.hex()}")
-    # decode the full pushed text length by reading the byte right before the ascii (push opcode)
-    # naive approach: step backward to find a push opcode that indicates length
-    # loop backward a few bytes
-    for j in range(max(0, ascii_idx-10), ascii_idx):
-        opcode = script[j]
-        if opcode <= 75:
-            length = opcode
-            if j + 1 + length >= ascii_idx and script[j+1:j+1+length].startswith(b"The Times"):
-                text = script[j+1:j+1+length]
-                print(f"Detected push at offset {j}: pushlen={length}")
-                print(f"Pushed ASCII text ({length} bytes):")
-                print(text.decode('ascii'))
-                break
+# Extract the transaction part (everything after the header and tx_count)
+tx_hex = block_hex[162:]
+tx_bytes = bytes.fromhex(tx_hex)
 
-# Also try to detect 4-byte nBits (pattern ffff001d)
-nbits_offset = script.find(bytes.fromhex('ffff001d'))
-if nbits_offset != -1:
-    print(f"\nFound nBits pattern (ffff001d) at script offset {nbits_offset}")
-    # show surrounding bytes
-    ctx = script[max(0, nbits_offset-4):nbits_offset+8]
-    print(f"context: {ctx.hex()}")
+ptr = 0
 
-# extra nonce (0x04) is small push right after nBits in genesis
-extra_nonce_offset = script.find(b'\x01\x04')
-if extra_nonce_offset != -1:
-    print(f"\nFound sequence 01 04 (push 1 byte with value 0x04) at offset {extra_nonce_offset}")
-    print(f"bytes around: {script[extra_nonce_offset-4:extra_nonce_offset+6].hex()}")
+# 1. Version (4 bytes)
+tx_version = struct.unpack_from("<I", tx_bytes, ptr)[0]
+ptr += 4
 
-# End
-print("\nParsing complete.")
+# 2. Input Count (1 byte for Genesis)
+vin_count = tx_bytes[ptr]
+ptr += 1
 
+# --- Input Parsing ---
+print(f"--- Input [0] ---")
+prev_txid = tx_bytes[ptr:ptr+32][::-1].hex() # Should be 000...0
+ptr += 32
+prev_vout = struct.unpack_from("<I", tx_bytes, ptr)[0] # Should be ffffffff
+ptr += 4
 
-"""
-version: 1 (0x00000001)
-vin_count: 1
+script_len = tx_bytes[ptr]
+ptr += 1
+script_sig = tx_bytes[ptr:ptr+script_len]
+ptr += script_len
 
---- input[0] ---
-prev_txid: 0000000000000000000000000000000000000000000000000000000000000000
-prev_vout: 4294967295
-script_length: 77 bytes
-sequence: 0xffffffff
+sequence = tx_bytes[ptr:ptr+4].hex()
+ptr += 4
 
---- coinbase script (raw hex) ---
-04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73
+print(f"Prev TXID:    {prev_txid}")
+print(f"Prev VOUT:    {prev_vout} (Coinbase identifier)")
+print(f"Script Length:{script_len} bytes")
 
---- disassembly (coinbase script) ---
-OP_PUSHBYTES(4):
-  hex: ffff001d
-  as little-endian hex: 0x1d00ffff
-OP_PUSHBYTES(1):
-  hex: 04
-OP_PUSHBYTES(69):
-  hex: 5468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73
-  ascii: The Times 03/Jan/2009 Chancellor on brink of second bailout for banks
+# Extracting Satoshi's hidden message from ScriptSig
+try:
+    msg_idx = script_sig.find(b"The Times")
+    if msg_idx != -1:
+        message = script_sig[msg_idx:].decode('ascii')
+        print(f"Message:      \033[92m{message}\033[0m")
+except Exception:
+    print("Message:      (Could not decode ASCII)")
 
---- interpreted fields (expected for genesis) ---
-Found 'The Times' at script offset 8. Context bytes before: 04ffff001d010445
-Detected push at offset 7: pushlen=69
-Pushed ASCII text (69 bytes):
-The Times 03/Jan/2009 Chancellor on brink of second bailout for banks
+# 3. Output Count
+vout_count = tx_bytes[ptr]
+ptr += 1
 
-Found nBits pattern (ffff001d) at script offset 1
-context: 04ffff001d01044554
+# --- Output Parsing ---
+print(f"\n--- Output [0] ---")
+value_sats = struct.unpack_from("<Q", tx_bytes, ptr)[0] # Q=uint64
+ptr += 8
 
-Found sequence 01 04 (push 1 byte with value 0x04) at offset 5
-bytes around: ffff001d010445546865
+pk_script_len = tx_bytes[ptr]
+ptr += 1
+pk_script = tx_bytes[ptr:ptr+pk_script_len]
+ptr += pk_script_len
 
-Parsing complete.
-"""
+print(f"Amount:       {value_sats / 100_000_000:.1f} BTC")
+print(f"PK Script:    {pk_script.hex()[:40]}...")
+
+# 4. Locktime
+locktime = struct.unpack_from("<I", tx_bytes, ptr)[0]
+print(f"\nLocktime:     {locktime}")
+
+# ------------------------------------------------------------
+# STEP 5: Integrity Verification
+# ------------------------------------------------------------
+format_header("VERIFICATION RESULTS")
+
+computed_txid = dsha256(tx_bytes)[::-1].hex()
+
+print(f"Computed TXID:  {computed_txid}")
+print(f"Header Merkle:  {merkle_root_header}")
+
+if computed_txid == merkle_root_header:
+    print("\n[RESULT] SUCCESS: Transaction matches Merkle Root!")
+else:
+    print("\n[RESULT] ERROR: Hash mismatch detected!")
+
+if block_hash.startswith("000000000019"):
+    print("[RESULT] SUCCESS: Block Hash satisfies Difficulty!")
