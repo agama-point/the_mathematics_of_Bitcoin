@@ -26,6 +26,38 @@ entropy → entropy + checksum → 11-bit groups → word indices → mnemonic p
 
 This is useful for testing custom implementations, validating third-party libraries, and understanding the low-level structure of the BIP-39 standard.
 
+```
+bip39 vectors: https://github.com/trezor/python-mnemonic/blob/master/vectors.json
+"80808080808080808080808080808080"
+"letter advice cage absurd amount doctor acoustic avoid letter advice cage above"
+
+[ --- test entropy --- ]
+input entropy: 80808080808080808080808080808080
+BIP39Functions - phrase: letter advice cage absurd amount doctor acoustic avoid letter advice cage above
+is_valid | reverese_entropy: (True, True, '80808080808080808080808080808080')
+--------------------------------------------------------------------------------
+[mnemonic_info]
+letter advic...e cage above ( 12 )
+1028 32 257 8 64 514 16 128 1028 32 257 4
+validate:  (True, True)
+--------------------------------------------------------------------------------
+letter 1028 |advice 32 |cage 257 |absurd 8 |amount 64 |doctor 514 |acoustic 16 |avoid 128 |letter 1028 |advice 32 |cage 257 |above 4 |
+ [1028, 32, 257, 8, 64, 514, 16, 128, 1028, 32, 257, 4]
+
+[mnemo_to_seed]
+b'e1N\xff9\x9d\x92\xa0\xdd\x066\x8d\xd6\x8ak\x8eae\xee\x95\xb0\x1b\xe9\xd8F\x00\xbdL2\xf6\x9b7\x08\xb4x\xbb\x9f!F5\x07~TD\xbf\xa42\xb2\xb9\x17\xb3\xc1cOJP\x9b\x03O\x99\xec\x86\xe5f' 
+
+[ binary word indices ]
+10000000100   1028   letter
+00000100000     32   advice
+00100000001    257   cage
+...
+10000000100   1028   letter
+00000100000     32   advice
+00100000001    257   cage
+00000000100      4   above
+```
+
 ---
 
 ### seed_find_last.py  — Completing the 12th word so the checksum becomes valid

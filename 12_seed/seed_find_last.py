@@ -20,18 +20,21 @@ for word in bip39:
     words = words_test11 + word
    
     if (keystore.bip39_is_checksum_valid(words)[0]):
-        print(num, "wodrs checkum-valid: ", word, keystore.bip39_is_checksum_valid(words))
+        print(num, "words checkum-valid: ", word, keystore.bip39_is_checksum_valid(words))
         num += 1
 
 """
-0 wodrs checkum-valid:  ability (True, True)
-1 wodrs checkum-valid:  acoustic (True, True)
-2 wodrs checkum-valid:  age (True, True)
-3 wodrs checkum-valid:  alone (True, True)
-4 wodrs checkum-valid:  anchor (True, True)
-5 wodrs checkum-valid:  any (True, True)
+0 words checkum-valid:  ability (True, True)
+1 words checkum-valid:  acoustic (True, True)
+2 words checkum-valid:  age (True, True)
+3 words checkum-valid:  alone (True, True)
+4 words checkum-valid:  anchor (True, True)
+5 words checkum-valid:  any (True, True)
+6 words checkum-valid:  army (True, True)
+7 words checkum-valid:  auction (True, True)
+8 words checkum-valid:  awkward (True, True)
 ...
-125 wodrs checkum-valid:  win (True, True)
-126 wodrs checkum-valid:  wise (True, True)
-127 wodrs checkum-valid:  zone (True, True)
+125 words checkum-valid:  win (True, True)
+126 words checkum-valid:  wise (True, True)
+127 words checkum-valid:  zone (True, True)
 """

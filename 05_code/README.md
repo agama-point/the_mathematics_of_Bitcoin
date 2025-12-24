@@ -17,6 +17,12 @@ bin_value = bin(dec_value)[2:]
 print("Hex:", h)
 print("Dec:", dec_value)
 print("Bin:", bin_value)
+
+"""
+Hex: ABC
+Dec: 2748
+Bin: 101010111100
+"""
 ```
 
 ---
