@@ -2,6 +2,7 @@ python-dotenv
 base58
 ecdsa
 cryptography
+pip_utils
 hashlib
 pybitcoin
 pyqrcode
