@@ -146,7 +146,7 @@ The hash is LOWER than the target. Proof of Work is VALID.
 -----------------------------------------------------------------
 ```
 
-### Timestamp decode
+### 05_timestamp.py (simple decode)
 ```
 [Little-endian / Big-endian]
 Number:         0x12345678
