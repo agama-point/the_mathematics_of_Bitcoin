@@ -146,4 +146,21 @@ The hash is LOWER than the target. Proof of Work is VALID.
 -----------------------------------------------------------------
 ```
 
+### Timestamp decode
+```
+[Little-endian / Big-endian]
+Number:         0x12345678
+Little-endian: 78 56 34 12
+Big-endian:    12 34 56 78
+
+Bits (first byte):
+LE first byte: 01111000
+BE first byte: 00010010
+==============================
+ [Genesis block timestamp]
+hex_ts:  29AB5F49
+int_timestamp:  699096905
+date_time UTC:  1992-02-26 09:35:05
+```
+
 ---
