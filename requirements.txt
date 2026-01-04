@@ -3,11 +3,11 @@ base58
 ecdsa
 cryptography
 pip_utils
-hashlib
 pybitcoin
 pyqrcode
 cryptos
 trezorlib
 pbkdf2
 pygame
+
 secp256k1
