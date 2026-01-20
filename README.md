@@ -19,11 +19,9 @@ touch .env
 Base: `https://github.com/agama-point/the_mathematics_of_Bitcoin/tree/main` :contentReference[oaicite:0]{index=0}
 
 
-[04_network](https://github.com/agama-point/the_mathematics_of_Bitcoin/tree/main/04_network)  Bitcoin Is a Transactional P2P Network | Computers in a Network — the Internet
-
-[05_code](https://github.com/agama-point/the_mathematics_of_Bitcoin/tree/main/05_code) Bitcoin Is Encoded Communication | Numeral Systems and Encoding
-
-[07_diffie_hellman](https://github.com/agama-point/the_mathematics_of_Bitcoin/tree/main/07_diffie_hellman) Asymmetric Cryptography | Diffie–Hellman Key Exchange
+- [04_network](https://github.com/agama-point/the_mathematics_of_Bitcoin/tree/main/04_network)  Bitcoin Is a Transactional P2P Network | Computers in a Network — the Internet
+- [05_code](https://github.com/agama-point/the_mathematics_of_Bitcoin/tree/main/05_code) Bitcoin Is Encoded Communication | Numeral Systems and Encoding
+- [07_diffie_hellman](https://github.com/agama-point/the_mathematics_of_Bitcoin/tree/main/07_diffie_hellman) Asymmetric Cryptography | Diffie–Hellman Key Exchange
 
 [08_ecdh](https://github.com/agama-point/the_mathematics_of_Bitcoin/tree/main/08_ecdh) Elliptic Curves Are Elegant | Modular Arithmetic and Cyclic Groups
 
