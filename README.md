@@ -1,6 +1,11 @@
 # the_Mathematics_of_Bitcoin
+
+### Mathematical Principles of the Bitcoin Revolution
+### A Simplified Introduction to a Complex Topic
+---
 Learn how Bitcoin works under the hood: a practical dive into the algebra, number theory, and cryptography that make the network tick.
 
+---
 ## install
 
 ```
