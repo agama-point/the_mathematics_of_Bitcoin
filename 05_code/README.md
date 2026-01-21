@@ -1,6 +1,6 @@
 # the_mathematics_of_Bitcoin
 
-## 05) code
+## 05) Code
 
 ```
 # This program converts a hexadecimal number ("ABC")

@@ -1,6 +1,6 @@
 # the_mathematics_of_Bitcoin
 
-## 20) quantum computer
+## 20) Quantum computer
 
 ### Quantum Computing Experiments
 

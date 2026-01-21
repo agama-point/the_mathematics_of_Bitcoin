@@ -1,6 +1,6 @@
 # the_mathematics_of_Bitcoin
 
-## 08) ECCDH
+## 08) ECDH
 
 
 ### Simplified Elliptic Curve Demo (Field modulo 17)

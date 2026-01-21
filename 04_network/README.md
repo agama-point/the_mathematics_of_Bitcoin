@@ -1,6 +1,6 @@
 # the_mathematics_of_Bitcoin
 
-## 04) network
+## 04) Network
 
 
 ```

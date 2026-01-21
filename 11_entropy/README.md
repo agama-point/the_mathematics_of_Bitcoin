@@ -1,6 +1,6 @@
 # the_mathematics_of_Bitcoin
 
-## 05) code
+## 11) Entropy
 
 ```
 1) Entropy for [3,1,2,3,2,3]:           1.459
