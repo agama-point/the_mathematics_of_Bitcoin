@@ -6,8 +6,12 @@ pip_utils
 pybitcoin
 pyqrcode
 cryptos
-trezorlib
+trezor
 pbkdf2
 pygame
 
 secp256k1
+numpy
+ipykernel
+matplotlib
+
