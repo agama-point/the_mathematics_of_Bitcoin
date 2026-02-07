@@ -80,3 +80,33 @@ This program (multi_inv_mod.py) investigates multiplicative inverses in modular 
 In parallel, the script computes the value `a^(n−2) mod n` and compares it with the actual inverse (when one exists). This highlights the special role of prime moduli. When `n` is a prime `p`, every nonzero residue has an inverse, and Fermat’s Little Theorem guarantees that `a^(p−2) mod p` is exactly the multiplicative inverse of `a`. In this case, the two methods always agree.
 
 For composite moduli, the behavior changes significantly. Many residues have no inverse at all, and even when an inverse exists, the expression `a^(n−2) mod n` has no general theoretical justification and often produces incorrect results. This contrast clearly illustrates both the scope and the limitation of Fermat’s Little Theorem, and motivates the use of more general results (such as Euler’s theorem) when working with non-prime moduli.
+
+
+```
+---------------------------------------------
+Multiplicative inverses modulo 5:
+ 0 → no inverse /  0 * 4 = 0 mod 5 → 0
+ 1 → inverse is 1 / 1 * 1 = 1 mod 5 → 1 f: 1 % 1==1
+ 2 → inverse is 3 / 2 * 3 = 6 mod 5 → 1 f: 8 % 3==3
+ 3 → inverse is 2 / 3 * 2 = 6 mod 5 → 1 f: 27 % 2==2
+ 4 → inverse is 4 / 4 * 4 = 16 mod 5 → 1 f: 64 % 4==4
+
+Multiplicative inverses modulo 6:
+ 0 → no inverse /  0 * 5 = 0 mod 6 → 0
+ 1 → inverse is 1 / 1 * 1 = 1 mod 6 → 1 f: 1 % 1==1
+ 2 → no inverse /  2 * 5 = 10 mod 6 → 4
+ 3 → no inverse /  3 * 5 = 15 mod 6 → 3
+ 4 → no inverse /  4 * 5 = 20 mod 6 → 2
+ 5 → inverse is 5 / 5 * 5 = 25 mod 6 → 1 f: 625 % 1==1
+
+Multiplicative inverses modulo 7:
+ 0 → no inverse /  0 * 6 = 0 mod 7 → 0
+ 1 → inverse is 1 / 1 * 1 = 1 mod 7 → 1 f: 1 % 1==1
+ 2 → inverse is 4 / 2 * 4 = 8 mod 7 → 1 f: 32 % 4==4
+ 3 → inverse is 5 / 3 * 5 = 15 mod 7 → 1 f: 243 % 5==5
+ 4 → inverse is 2 / 4 * 2 = 8 mod 7 → 1 f: 1024 % 2==2
+ 5 → inverse is 3 / 5 * 3 = 15 mod 7 → 1 f: 3125 % 3==3
+ 6 → inverse is 6 / 6 * 6 = 36 mod 7 → 1 f: 7776 % 6==6
+
+...
+```
