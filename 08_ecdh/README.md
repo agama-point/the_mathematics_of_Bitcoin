@@ -51,8 +51,6 @@ Verification test: 8G + 2G = 10G
 ```
 
 
-
-
 ---
 
 
@@ -72,4 +70,13 @@ The goal of this example is to provide a clean and minimal demonstration of how 
 This is useful for educational purposes and for understanding the foundations of Bitcoin’s cryptography.
 
 
---
+---
+
+
+### Modular inverses and Fermat’s Little Theorem
+
+This program (multi_inv_mod.py) investigates multiplicative inverses in modular arithmetic. For a given modulus `n`, the script iterates over all residues `a ∈ {0, …, n−1}` and determines whether a multiplicative inverse exists by directly searching for a value `b` such that `a · b ≡ 1 (mod n)`. This makes explicit the fundamental rule that an inverse exists if and only if `gcd(a, n) = 1`, i.e. `a` is coprime with the modulus.
+
+In parallel, the script computes the value `a^(n−2) mod n` and compares it with the actual inverse (when one exists). This highlights the special role of prime moduli. When `n` is a prime `p`, every nonzero residue has an inverse, and Fermat’s Little Theorem guarantees that `a^(p−2) mod p` is exactly the multiplicative inverse of `a`. In this case, the two methods always agree.
+
+For composite moduli, the behavior changes significantly. Many residues have no inverse at all, and even when an inverse exists, the expression `a^(n−2) mod n` has no general theoretical justification and often produces incorrect results. This contrast clearly illustrates both the scope and the limitation of Fermat’s Little Theorem, and motivates the use of more general results (such as Euler’s theorem) when working with non-prime moduli.
