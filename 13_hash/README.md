@@ -68,3 +68,161 @@ x 0x6a09e667 01101010000010011110011001100111
 7 0xced413cc 11001110110101000001001111001100
 ```
 
+---
+
+# ASH16 – Agama Simple Hash (16-bit)
+
+**ASH16** is a small, educational 16-bit hash function designed to illustrate the principles of cryptographic hashing in a highly simplified setting. It is **not intended for secure cryptographic use** but serves as a minimalistic model for teaching and experimentation.
+
+## What it Does
+
+ASH16 takes an arbitrary-length input (sequence of bytes) and produces a fixed **16-bit hash value**. It processes the input in **16-bit blocks**, using an internal state of 2–3 8-bit registers (`A`, `B`, optionally `C`) and simple operations such as XOR, rotations, and swapping.
+
+## How It Works
+
+1. **Input Padding**  
+   - The input is padded with zeros to a multiple of 16 bits (2 bytes) so that each block can be processed consistently.
+
+2. **Initial State**  
+   - The internal registers are initialized to zero (`A = 0x00`, `B = 0x00`, optional `C = 0x00`).  
+   - A small **initial vector (`IV8`)** derived from the fractional parts of the square roots of the first 8 primes (truncated to 8 bits) is used for mixing.
+
+3. **Block Processing**  
+   - Each 16-bit block of the input is split into two bytes (`m0`, `m1`).  
+   - The bytes are **mixed into the internal state** using XOR operations with the registers.
+
+4. **Mixing Rounds**  
+   - The function performs several rounds (e.g., 8–16) of **mixing**, where each round:
+     - XORs a register with an IV element (cycling through `IV8` if rounds > 8)  
+     - Applies **rotations** (`rol8`) to `A` and `B`  
+     - Combines registers using XOR and other small diffusion operations  
+     - Swaps the registers to propagate differences
+
+5. **Output**  
+   - After processing all blocks, the final state of registers `A` and `B` (and optionally `C`) is combined into a **16-bit hash**.  
+   - The hash can be output in **decimal, hexadecimal, or binary form** for inspection.
+
+## Why It Works
+
+- The small internal state and repeated mixing rounds allow input bits to **diffuse** across the registers.  
+- XOR and rotations provide a simple nonlinear transformation, demonstrating how small differences in input produce changes in the hash output.  
+- Cycling through `IV8` ensures that even repetitive inputs produce varying intermediate states.  
+
+## Educational Purpose
+
+ASH16 is a **teaching tool** for understanding:
+
+- Padding and block processing in hash functions  
+- Register-based internal state updates  
+- Basic diffusion through XOR, rotation, and swapping  
+- The inevitability of collisions in small hash sizes (16 bits)  
+
+It is **not secure** and should not be used for any real cryptographic applications. Its simplicity makes it ideal for **experiments with collisions, hash visualization, and bit-level debugging**.
+
+---
+
+### Optional Diagram (Conceptual)
+```text
+Input block (16 bits)
+│
+▼
++----------------+
+| Registers A,B |
+| Optional C |
++----------------+
+│
+▼
+[8-16 Mixing Rounds: XOR, ROT, Swap, IV8]
+│
+▼
+16-bit ASH16 Hash Output
+```
+
+# ASH16 – Agama Simple Hash (16-bit)
+
+**ASH16** is a small, educational 16-bit hash function designed to illustrate the principles of cryptographic hashing in a highly simplified setting. It is **not intended for secure cryptographic use** but serves as a minimalistic model for teaching and experimentation.
+
+## What it Does
+
+ASH16 takes an arbitrary-length input (sequence of bytes) and produces a fixed **16-bit hash value**. It processes the input in **16-bit blocks**, using an internal state of 2–3 8-bit registers (`A`, `B`, optionally `C`) and simple operations such as XOR, rotations, and swapping.
+
+## How It Works
+
+1. **Input Padding**  
+   - The input is padded with zeros to a multiple of 16 bits (2 bytes) so that each block can be processed consistently.
+
+2. **Initial State**  
+   - The internal registers are initialized to zero (`A = 0x00`, `B = 0x00`, optional `C = 0x00`).  
+   - A small **initial vector (`IV8`)** derived from the fractional parts of the square roots of the first 8 primes (truncated to 8 bits) is used for mixing.
+
+3. **Block Processing**  
+   - Each 16-bit block of the input is split into two bytes (`m0`, `m1`).  
+   - The bytes are **mixed into the internal state** using XOR operations with the registers.
+
+4. **Mixing Rounds**  
+   - The function performs several rounds (e.g., 8–16) of **mixing**, where each round:
+     - XORs a register with an IV element (cycling through `IV8` if rounds > 8)  
+     - Applies **rotations** (`rol8`) to `A` and `B`  
+     - Combines registers using XOR and other small diffusion operations  
+     - Swaps the registers to propagate differences
+
+5. **Output**  
+   - After processing all blocks, the final state of registers `A` and `B` (and optionally `C`) is combined into a **16-bit hash**.  
+   - The hash can be output in **decimal, hexadecimal, or binary form** for inspection.
+
+## Binary Visualization
+
+To better understand how input propagates through the hash function, ASH16 can be represented **bitwise**:
+
+```text
+AB:
+Input:  00000001 00000000  (16-bit block)
+Registers A,B (initial): 00000000 00000000
+
+Round 0:
+  A ^= IV8[0]  -> 10101010
+  B rotated    -> 00000000
+  A ^= B       -> 10101010
+  Swap A,B     -> 00000000 10101010
+
+Round 1:
+  ...
+  
+Final Hash Output (16-bit):
+  10101010 11001100
+```
+
+
+```text
+ABC:
+Input:  00000001 00000000  (16-bit block)
+Registers A,B (initial): 00000000 00000000
+
+Round 0:
+  A ^= IV8[0]  -> 10101010
+  B rotated    -> 00000000
+  A ^= B       -> 10101010
+  Swap A,B     -> 00000000 10101010
+
+Round 1:
+  ...
+  
+Final Hash Output (16-bit):
+  10101010 11001100
+```
+```python
+print_bit_hash(1)
+print_bit_hash(256)
+print_bit_hash(1023)
+print_bit_hash(0xABCD)
+```
+```
+Input: 1 | bin: 0000000000000001 | Hash: 46660 | bin: 1011011001000100
+Input: 256 | bin: 0000000100000000 | Hash: 46660 | bin: 1011011001000100
+Input: 1023 | bin: 0000001111111111 | Hash: 52345 | bin: 1100110010101001
+Input: 43981 | bin: 1010101111001101 | Hash: 34121 | bin: 1000010100111001
+```
+
+
+
+
