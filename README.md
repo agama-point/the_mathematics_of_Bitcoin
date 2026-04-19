@@ -57,6 +57,9 @@ https://github.com/agama-point/agama_point_crypto
 Alternatively, you can use the older version (from 2020):  
 https://github.com/agama-point/crypto_agama
 
+A PyQt6-based desktop application for "secure" blockchain transactions using external hardware wallet devices connected via UART:
+https://github.com/agama-point/obt_app
+
 ---
 
 ### Bitcoin Core (source code)  
