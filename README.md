@@ -59,7 +59,6 @@ https://github.com/agama-point/crypto_agama
 
 
 A PyQt6-based desktop application for "secure" blockchain transactions using external hardware wallet devices connected via UART:
-
 https://github.com/agama-point/obt_app
 
 ---
