@@ -1,252 +1,251 @@
-\# Základy Bitcoinu – předchůdci a klíčové principy
+# Základy Bitcoinu – předchůdci a klíčové principy
 
 
 
-\## 1. Kontext: vznik Bitcoinu
+## 1. Kontext: vznik Bitcoinu
 
-:contentReference\[oaicite:0]{index=0} vzniká jako syntéza existujících kryptografických a ekonomických konceptů (2008–2009, Satoshi Nakamoto). Nejde o jediný nový objev, ale o \*\*spojení několika samostatných návrhů do funkčního decentralizovaného peněžního systému\*\*.
+:contentReference[oaicite:0]{index=0} vzniká jako syntéza existujících kryptografických a ekonomických konceptů (2008–2009, Satoshi Nakamoto). Nejde o jediný nový objev, ale o **spojení několika samostatných návrhů do funkčního decentralizovaného peněžního systému**.
 
 
 
-\---
+---
 
 
 
-\## 2. Předchůdci Bitcoinu
+## 2. Předchůdci Bitcoinu
 
 
+### Hashcash (1997)
 
-\### Hashcash (1997)
+:contentReference[oaicite:1]{index=1}  
 
-:contentReference\[oaicite:1]{index=1}  
+- Proof-of-work mechanismus pro ochranu proti spamu  
 
-\- Proof-of-work mechanismus pro ochranu proti spamu  
+- Výpočetně náročný hash s požadovaným prefixem  
 
-\- Výpočetně náročný hash s požadovaným prefixem  
+- Původně pro e-mailový anti-spam
 
-\- Původně pro e-mailový anti-spam
 
 
+**Přínos pro Bitcoin:**
 
-\*\*Přínos pro Bitcoin:\*\*
+- základní stavební kámen Proof-of-Work (PoW)
 
-\- základní stavební kámen Proof-of-Work (PoW)
 
 
+---
 
-\---
 
 
+### b-money (1998)
 
-\### b-money (1998)
+:contentReference[oaicite:2]{index=2}  
 
-:contentReference\[oaicite:2]{index=2}  
+- návrh decentralizované digitální měny  
 
-\- návrh decentralizované digitální měny  
+- distribuovaná databáze zůstatků  
 
-\- distribuovaná databáze zůstatků  
+- absence centrální autority
 
-\- absence centrální autority
 
 
+**Přínos pro Bitcoin:**
 
-\*\*Přínos pro Bitcoin:\*\*
+- idea decentralizovaných peněz
 
-\- idea decentralizovaných peněz
+- koncept distribuovaného konsenzu
 
-\- koncept distribuovaného konsenzu
 
 
+---
 
-\---
 
 
+### bit gold (1998–2005)
 
-\### bit gold (1998–2005)
+:contentReference[oaicite:3]{index=3}  
 
-:contentReference\[oaicite:3]{index=3}  
+- digitální „zlato“ založené na PoW  
 
-\- digitální „zlato“ založené na PoW  
+- řetězení důkazů práce  
 
-\- řetězení důkazů práce  
+- částečně decentralizovaný systém
 
-\- částečně decentralizovaný systém
 
 
+**Přínos pro Bitcoin:**
 
-\*\*Přínos pro Bitcoin:\*\*
+- ekonomická analogie zlata  
 
-\- ekonomická analogie zlata  
+- koncept scarcity (vzácnosti) v digitálním světě  
 
-\- koncept scarcity (vzácnosti) v digitálním světě  
+- PoW jako základ hodnoty
 
-\- PoW jako základ hodnoty
 
 
+---
 
-\---
 
 
+### RPOW (Reusable Proof of Work, 2004)
 
-\### RPOW (Reusable Proof of Work, 2004)
+:contentReference[oaicite:4]{index=4}  
 
-:contentReference\[oaicite:4]{index=4}  
+- opakovatelný Proof-of-Work token  
 
-\- opakovatelný Proof-of-Work token  
+- serverově ověřované PoW jednotky  
 
-\- serverově ověřované PoW jednotky  
+- předstupeň digitální hotovosti
 
-\- předstupeň digitální hotovosti
 
 
+**Přínos pro Bitcoin:**
 
-\*\*Přínos pro Bitcoin:\*\*
+- práce s přenositelnými PoW jednotkami  
 
-\- práce s přenositelnými PoW jednotkami  
+- experiment s digitální „hotovostí“
 
-\- experiment s digitální „hotovostí“
 
 
+---
 
-\---
 
 
+### Digitální časová razítka (1991)
 
-\### Digitální časová razítka (1991)
+:contentReference[oaicite:5]{index=5} + :contentReference[oaicite:6]{index=6}  
 
-:contentReference\[oaicite:5]{index=5} + :contentReference\[oaicite:6]{index=6}  
+- zabezpečené timestampování dokumentů  
 
-\- zabezpečené timestampování dokumentů  
+- řetězení hashů bloků  
 
-\- řetězení hashů bloků  
+- nemožnost zpětné úpravy historie
 
-\- nemožnost zpětné úpravy historie
 
 
+**Přínos pro Bitcoin:**
 
-\*\*Přínos pro Bitcoin:\*\*
+- základ blockchainové struktury  
 
-\- základ blockchainové struktury  
+- neměnnost historie
 
-\- neměnnost historie
 
 
+---
 
-\---
 
 
+### Merkleovy stromy (1979)
 
-\### Merkleovy stromy (1979)
+:contentReference[oaicite:7]{index=7}  
 
-:contentReference\[oaicite:7]{index=7}  
+- hierarchické hashování dat  
 
-\- hierarchické hashování dat  
+- efektivní ověřování velkých datových sad  
 
-\- efektivní ověřování velkých datových sad  
+- kryptografická integrita struktury
 
-\- kryptografická integrita struktury
 
 
+**Přínos pro Bitcoin:**
 
-\*\*Přínos pro Bitcoin:\*\*
+- efektivní ukládání transakcí v blocích  
 
-\- efektivní ukládání transakcí v blocích  
+- rychlá verifikace bez celé databáze
 
-\- rychlá verifikace bez celé databáze
 
 
+---
 
-\---
 
 
+## 3. Klíčové principy Bitcoinu
 
-\## 3. Klíčové principy Bitcoinu
 
 
+### Proof-of-Work (PoW)
 
-\### Proof-of-Work (PoW)
+- výpočetně náročné hledání hash řešení  
 
-\- výpočetně náročné hledání hash řešení  
+- zabezpečení proti Sybil útokům  
 
-\- zabezpečení proti Sybil útokům  
+- ekonomická ochrana sítě
 
-\- ekonomická ochrana sítě
 
 
+---
 
-\---
 
 
+### Decentralizace (P2P síť)
 
-\### Decentralizace (P2P síť)
+- žádná centrální autorita  
 
-\- žádná centrální autorita  
+- validace mezi uzly  
 
-\- validace mezi uzly  
+- distribuovaná konsenzuální vrstva
 
-\- distribuovaná konsenzuální vrstva
 
 
+---
 
-\---
 
 
+### Nejdelší řetězec (Longest Chain Rule)
 
-\### Nejdelší řetězec (Longest Chain Rule)
+- platná historie = řetězec s nejvíce kumulovanou prací  
 
-\- platná historie = řetězec s nejvíce kumulovanou prací  
+- jednoduchý konsenzuální mechanismus
 
-\- jednoduchý konsenzuální mechanismus
 
 
+---
 
-\---
 
 
+### Kryptografické podpisy (ECDSA)
 
-\### Kryptografické podpisy (ECDSA)
+- vlastnictví prostředků  
 
-\- vlastnictví prostředků  
+- autorizace transakcí  
 
-\- autorizace transakcí  
+- nepopiratelnost
 
-\- nepopiratelnost
 
 
+---
 
-\---
 
 
+### Transparentní účetní kniha
 
-\### Transparentní účetní kniha
+- veřejná historie transakcí  
 
-\- veřejná historie transakcí  
+- auditovatelný systém  
 
-\- auditovatelný systém  
+- pseudonymita místo anonymity
 
-\- pseudonymita místo anonymity
 
 
+---
 
-\---
 
 
+### Merkle stromy + bloková struktura
 
-\### Merkle stromy + bloková struktura
+- efektivní organizace dat  
 
-\- efektivní organizace dat  
+- kryptografická integrita bloků  
 
-\- kryptografická integrita bloků  
+- škálovatelné ověřování
 
-\- škálovatelné ověřování
 
 
+---
 
-\---
 
 
-
-\## 4. Jak se to spojilo do Bitcoinu
+## 4. Jak se to spojilo do Bitcoinu
 
 
 
@@ -302,11 +301,11 @@ BITCOIN
 
 
 
-\---
+---
 
 
 
-\## 5. Výsledný systém
+## 5. Výsledný systém
 
 
 
@@ -314,39 +313,39 @@ Bitcoin kombinuje:
 
 
 
-\- výpočetní důkaz práce (Hashcash)
+- výpočetní důkaz práce (Hashcash)
 
-\- ekonomickou decentralizaci (b-money)
+- ekonomickou decentralizaci (b-money)
 
-\- digitální vzácnost (bit gold)
+- digitální vzácnost (bit gold)
 
-\- přenositelné výpočtové jednotky (RPOW)
+- přenositelné výpočtové jednotky (RPOW)
 
-\- neměnnou historii (timestamping)
+- neměnnou historii (timestamping)
 
-\- efektivní datovou strukturu (Merkle stromy)
+- efektivní datovou strukturu (Merkle stromy)
 
-\- peer-to-peer síť bez autority
-
-
-
-\---
+- peer-to-peer síť bez autority
 
 
 
-\## 6. Shrnutí
+---
 
 
 
-Bitcoin není jeden vynález, ale \*\*architektonická syntéza existujících myšlenek\*\*, kde inovace spočívá v jejich:
+## 6. Shrnutí
 
 
 
-\- propojení
+Bitcoin není jeden vynález, ale **architektonická syntéza existujících myšlenek**, kde inovace spočívá v jejich:
 
-\- ekonomickém uzavření (incentivy)
 
-\- odstranění centrální autority
 
-\- vytvoření samoudržitelného systému
+- propojení
+
+- ekonomickém uzavření (incentivy)
+
+- odstranění centrální autority
+
+- vytvoření samoudržitelného systému
 
